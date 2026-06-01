@@ -1,0 +1,20 @@
+#
+# RISC-V translation routines for the Xg233ai extension
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Reference: G233 AI custom instructions (opcode=0x7b, funct3=6)
+
+# Fields
+%rs2  20:5
+%rs1  15:5
+%rd    7:5
+
+# Argument sets
+&r    rd rs1 rs2  !extern
+
+# Formats
+@r         .......  ..... ..... ... ..... ....... &r                %rs2 %rs1 %rd
+
+# Xg233ai Custom-3 Instructions (opcode=0x7b, funct3=6)
+xg233ai_vrelu    1010110 ..... ..... 110 ..... 1111011 @r  # funct7=86
