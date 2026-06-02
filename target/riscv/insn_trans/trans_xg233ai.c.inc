@@ -26,7 +26,16 @@ static bool trans_xg233ai_##name(DisasContext *ctx, arg_r *a) \
     return true; \
 }
 
+GEN_XG233AI_HELPER3(crush)
+GEN_XG233AI_HELPER3(dma)
+GEN_XG233AI_HELPER3(expand)
+GEN_XG233AI_HELPER3(sort)
+GEN_XG233AI_HELPER3(vadd)
+GEN_XG233AI_HELPER2_RET(vdot)   /* 返回 long */
+GEN_XG233AI_HELPER2_RET(vmax)   /* 返回 long */
 GEN_XG233AI_HELPER3(vrelu)
+GEN_XG233AI_HELPER3(vscale)
+GEN_XG233AI_HELPER3(gemm)
 
 #undef GEN_XG233AI_HELPER3
 #undef GEN_XG233AI_HELPER2_RET

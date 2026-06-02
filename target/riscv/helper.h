@@ -4,18 +4,18 @@ DEF_HELPER_2(raise_exception, noreturn, env, i32)
 /* Xg233ai custom instruction helpers */
 
 /* void helpers — 无返回值，通过指针写 memory */
-// DEF_HELPER_4(xg233ai_crush, void, env, tl, tl, tl)
-// DEF_HELPER_4(xg233ai_dma, void, env, tl, tl, tl)
-// DEF_HELPER_4(xg233ai_expand, void, env, tl, tl, tl)
-// DEF_HELPER_4(xg233ai_gemm, void, env, tl, tl, tl)
-// DEF_HELPER_4(xg233ai_sort, void, env, tl, tl, tl)
-// DEF_HELPER_4(xg233ai_vadd, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_crush, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_dma, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_expand, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_gemm, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_sort, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_vadd, void, env, tl, tl, tl)
 DEF_HELPER_4(xg233ai_vrelu, void, env, tl, tl, tl)
-// DEF_HELPER_4(xg233ai_vscale, void, env, tl, tl, tl)
+DEF_HELPER_4(xg233ai_vscale, void, env, tl, tl, tl)
 
-// /* 有返回值的 helpers — 返回 long */
-// DEF_HELPER_FLAGS_3(xg233ai_vdot, TCG_CALL_NO_RWG, tl, env, tl, tl)
-// DEF_HELPER_FLAGS_3(xg233ai_vmax, TCG_CALL_NO_RWG, tl, env, tl, tl)
+/* 有返回值的 helpers — 返回 long */
+DEF_HELPER_FLAGS_3(xg233ai_vdot, TCG_CALL_NO_RWG, tl, env, tl, tl)
+DEF_HELPER_FLAGS_3(xg233ai_vmax, TCG_CALL_NO_RWG, tl, env, tl, tl)
 
 /* Floating Point - rounding mode */
 DEF_HELPER_FLAGS_2(set_rounding_mode, TCG_CALL_NO_WG, void, env, i32)

@@ -3223,7 +3223,6 @@ static const TypeInfo riscv_cpu_type_infos[] = {
         .cfg.ext_zbc = true,
         .cfg.ext_zbs = true,
         .cfg.ext_XVentanaCondOps = true,
-        .cfg.ext_Xg233ai = true,
 
         .cfg.mvendorid = VEYRON_V1_MVENDORID,
         .cfg.marchid = VEYRON_V1_MARCHID,
