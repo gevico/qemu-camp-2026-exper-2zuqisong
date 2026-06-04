@@ -212,11 +212,14 @@ void HELPER(xg233ai_gemm)(
     }
 }
 
+/*
+ * [已替换为内联 TCG] — 见 insn_trans/trans_xg233ai.c.inc 中的 trans_xg233ai_vadd()
+ *
 void HELPER(xg233ai_vadd)(
     CPURISCVState *env,
-    target_ulong c,         // rd 
-    target_ulong a,         // rs1 
-    target_ulong b)         // rs2 
+    target_ulong c,         // rd
+    target_ulong a,         // rs1
+    target_ulong b)         // rs2
 {
     for (int i = 0; i < 16; i++) {
         uint32_t av = cpu_ldl_data(env, a + i * 4);
@@ -224,3 +227,4 @@ void HELPER(xg233ai_vadd)(
         cpu_stl_data(env, c + i * 4, av + bv);
     }
 }
+ */
