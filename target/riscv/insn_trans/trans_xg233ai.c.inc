@@ -29,10 +29,10 @@ GEN_XG233AI_HELPER3(crush)
 GEN_XG233AI_HELPER3(dma)
 GEN_XG233AI_HELPER3(expand)
 GEN_XG233AI_HELPER3(sort)
-/* GEN_XG233AI_HELPER3(vadd) -- [已替换为内联 TCG 版本，helper 保留用于对比] */
+/* GEN_XG233AI_HELPER3(vadd) */
 GEN_XG233AI_HELPER2_RET(vdot)   /* 返回 long */
 GEN_XG233AI_HELPER2_RET(vmax)   /* 返回 long */
-GEN_XG233AI_HELPER3(vrelu)
+/* GEN_XG233AI_HELPER3(vrelu) */
 GEN_XG233AI_HELPER3(vscale)
 GEN_XG233AI_HELPER3(gemm)
 
@@ -75,6 +75,61 @@ static bool trans_xg233ai_vadd(DisasContext *ctx, arg_r *a)
             tcg_gen_addi_tl(ptr_c, ptr_c, 4);
             tcg_gen_addi_tl(ptr_a, ptr_a, 4);
             tcg_gen_addi_tl(ptr_b, ptr_b, 4);
+        }
+    }
+
+    return true;
+}
+
+/* ================================================================
+ * 内联 TCG IR 版本：vrelu
+ *
+ * 功能：
+ *   对长度为 16 的 int32 向量执行 ReLU 运算：
+ *       dst[i] = max(src[i], 0)
+ *
+ * 寄存器约定：
+ *   rd  -> 目标向量首地址
+ *   rs1 -> 源向量首地址
+ *
+ * 实现方式：
+ *   1. 从 Guest 内存读取 int32 元素
+ *   2. 使用 TCG 的 smax 指令计算 max(val, 0)
+ *   3. 写回 Guest 内存
+ *   4. 共处理 16 个元素
+ * ================================================================ */
+static bool trans_xg233ai_vrelu(DisasContext *ctx, arg_r *a)
+{
+    TCGv ptr_d = tcg_temp_new();
+    TCGv ptr_s = tcg_temp_new();
+
+    tcg_gen_mov_tl(ptr_d, get_gpr(ctx, a->rd, EXT_NONE));
+    tcg_gen_mov_tl(ptr_s, get_gpr(ctx, a->rs1, EXT_NONE));
+
+    TCGv_i32 zero = tcg_constant_i32(0);
+
+    for (int i = 0; i < 16; i++) {
+        TCGv_i32 val = tcg_temp_new_i32();
+
+        tcg_gen_qemu_ld_i32(
+            val,
+            ptr_s,
+            ctx->mem_idx,
+            MO_TESL
+        );
+
+        tcg_gen_smax_i32(val, val, zero);
+
+        tcg_gen_qemu_st_i32(
+            val,
+            ptr_d,
+            ctx->mem_idx,
+            MO_TESL
+        );
+
+        if (i < 15) {
+            tcg_gen_addi_tl(ptr_s, ptr_s, 4);
+            tcg_gen_addi_tl(ptr_d, ptr_d, 4);
         }
     }
 
